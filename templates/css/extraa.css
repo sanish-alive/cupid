@@ -1,0 +1,39 @@
+#manageUpImg{
+	background-color: #ff4584;
+	color:white;
+	border:none;
+	border-radius: 5px;
+	padding: 10px 20px;
+}
+
+#manageUpImg:hover{
+	background-color: #7762aa;
+	transition-duration: 0.3s;
+}
+
+#manageDelImg{
+	width: 100%;
+	background-color: #ff4584;
+	color:white; border:none;
+	border-radius: 5px;
+	padding: 5px;
+}
+
+#manageDelImg:hover{
+	background-color: #7762aa;
+	transition-duration: 0.3s;
+}
+
+
+#editUpdt{
+	background-color: #ff4584;
+	color:white;
+	border:none;
+	border-radius: 5px;
+	padding: 10px 20px;
+}
+
+#editUpdt:hover{
+	background-color: #7762aa;
+	transition-duration: 0.3s;
+}

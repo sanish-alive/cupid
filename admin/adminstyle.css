@@ -1,0 +1,60 @@
+*{
+	margin: 0;
+	padding: 0;
+	font-family: sans-serif;
+	font-size: 20px;
+}
+
+.navbar{
+	position: fixed;
+	overflow: hidden;
+	background-color: #ff4584;
+	top: 0;
+	width: 100%;
+}
+
+.navbar a{
+	float: right;
+	display: block;
+	color: white;
+	text-align: center;
+	font-weight: bold;
+	padding: 14px 30px;
+	text-decoration: none;
+	font-size: 19px;
+	transition: 0.3s;
+}
+
+.navbar a:hover{
+	color: #7762aa;
+}
+
+#navlogo{
+	float: left !important;
+}
+
+
+.usertable{
+	margin-top: 70px;
+}
+
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th{
+	color: #ff4584;
+	text-align: center;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
