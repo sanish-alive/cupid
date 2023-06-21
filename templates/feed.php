@@ -2,37 +2,34 @@
 
 session_start();
 
-require_once  $_SERVER['DOCUMENT_ROOT']."/cupid/db_base/extractData.php";
-require_once  $_SERVER['DOCUMENT_ROOT']."/cupid/db_base/insertData.php";
-
-
-if(!isset($_SESSION['loggedIn']) && $_SESSION['loggedIn']!="true" && !isset($_COOKIE['auth']) && $_COOKIE['auth']!="true"){
-	header("location: ../index.php");
+if(!isset($_SESSION['loggedIn']) && $_SESSION['loggedIn']!="true" && !isset($_COOKIE['auth']) && $_COOKIE['auth']!="true") {
+    header("location: ../index.php");
 }
 
+$curl = curl_init();
 
+curl_setopt_array($curl, array(
+    CURLOPT_URL => 'localhost:5000/cosine',
+    CURLOPT_RETURNTRANSFER => true,
+    CURLOPT_ENCODING => '',
+    CURLOPT_MAXREDIRS => 10,
+    CURLOPT_TIMEOUT => 0,
+    CURLOPT_FOLLOWLOCATION => true,
+    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+    CURLOPT_CUSTOMREQUEST => 'POST',
+    CURLOPT_POSTFIELDS => 'lastname=shrestha&age=21&height=181&gender=Female&bio=i%20am%20a%20software%20engineer%20with%20a%20passion%20for%20coding',
+    CURLOPT_HTTPHEADER => array(
+    'Content-Type: application/x-www-form-urlencoded'
+    ),
+));
 
+$response = curl_exec($curl);
 
-if($_SESSION['gender']=='Male'){
-	$opgender = "Female";
-}else if($_SESSION['gender']=='Female'){
-	$opgender = "Male";
-}else{
-	echo "gender error";
-}
+curl_close($curl);
 
-
-$a = new ExtractData();
-$av = $a->extAlreadyVisited($_SESSION['email']);
-$alreayvisited = $av['alreadyvisited'];
-$alreayvisited = (int) $alreayvisited;
-$_SESSION['alreadyvisited'] = $alreayvisited; 
-
-$age = $_SESSION['age'];
-
-
+// Decode the response JSON
+$data = json_decode($response, true);
 ?>
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -45,73 +42,43 @@ $age = $_SESSION['age'];
 <body>
 
 <div class="navbar">
-		<a id="navlogo" href="">Cupid</a>
-		<a href="logout.php">Logout</a>
-		<a href="myMatch.php">My Match</a>
-		<a href="myProfile.php">Profile</a>
-		<a href="feed.php">Feed</a>
+    <a id="navlogo" href="">Cupid</a>
+    <a href="logout.php">Logout</a>
+    <a href="myMatch.php">My Match</a>
+    <a href="myProfile.php">Profile</a>
+    <a href="feed.php">Feed</a>
 </div>
-
 
 <div class="usercontainer">
-	<?php
 
-	for($i=0;$i<20;$i++){
-		$alreayvisited++;
-
-		$row = $a->extFeed($opgender, $alreayvisited, $age);
-		#mysqli_fetch_array($data);
-		if(isset($row)){
-			if($row['gender']==$opgender){
-	?>
-			
-				<a href="userinfo.php?matchid=<?php echo $row['userid']; ?>"><div class = "userprofile">
+<?php
+if ($data !== null) {
+    foreach ($data as $item) {
+        if(!isset($item['age'])) continue;
+?>
+        <a href="userinfo.php?matchid=<?php echo $item['id']; ?>"><div class = "userprofile">
 	
-					<div class=usercard>
-						<img src="../uploads/<?php echo $row['profileImg'] ?>">
-						<div class="infocontainer">
-							<p><b>Name: </b><?php echo $row['firstname']." ".$row['lastname']; ?></p>
-							<p><b>Age: </b><?php echo $row['age']; ?></p>
-							<p><b>Height: </b><?php echo $row['height']; ?></p>
-							<p><?php echo $row['bio']; ?></p></a>
+            <div class=usercard>
+                <img src="../uploads/<?php echo $item['profileImg'] ?>">
+                <div class="infocontainer">
+                    <p><b>Name: </b><?php echo $item['firstname']." ".$item['lastname']; ?></p>
+                    <p><b>Age: </b><?php echo $item['age']; ?></p>
+                    <p><b>Height: </b><?php echo $item['height']; ?></p>
+                    <p><?php echo $item['bio']; ?></p></a>
 
-							<center><button id='<?php echo $i ?>' onclick = "userliked('<?php echo $row['userid']; ?>','<?php echo $i ?>')">	&#9829;</button><center>
-						</div>
-					</div>
-				</div>
-
-				<?php
-				$updatevisited = $row['userid'];
-
-			}else{
-				$i--;
-			}
-		}
-
-	}
-
-
-	?>	
-
-</div>
-
+                    <center><button id='<?php echo $item['id']; ?>' onclick = "userliked('<?php echo $item['id']; ?>','<?php echo $item['id']; ?>')">	&#9829;</button><center>
+                </div>
+            </div>
+        </div></a>
+<?php
+    }
+}
+?>
+        
 <center>
 <div style="margin-top: 20px; margin-bottom: 20px;">
 
-	<?php
-
-	$b = new InsertData();
-
-
-		if(isset($updatevisited)){
-			$b->insertAlreadyVisited($_SESSION['email'], $updatevisited);
-			echo "<a style='text-decoration: none; color: white; background-color: rgb(255, 69, 132, 1); padding: 10px 40px; border-radius:5px' id='nextfeed' href='".htmlspecialchars($_SERVER['PHP_SELF'])."'>Next</a>";
-		}else{
-			echo "<h1>Try Next Time</h1>";
-			$b->insertAlreadyVisited($_SESSION['email'], 0);#delete this
-		}
-
-	?>
+	<a style='text-decoration: none; color: white; background-color: rgb(255, 69, 132, 1); padding: 10px 40px; border-radius:5px' id='nextfeed' href='#'>Next</a>
 </div>
 </center>
 
@@ -128,18 +95,9 @@ $age = $_SESSION['age'];
 
 	}
 
-	
-
-	
-		
-
-		
-
 
 	
 </script>
 
 </body>
 </html>
-
-

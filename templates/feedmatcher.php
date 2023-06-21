@@ -6,7 +6,7 @@ if(!isset($_SESSION['loggedIn']) && $_SESSION['loggedIn']!="true" && !isset($_CO
 }
 
 
-require $_SERVER['DOCUMENT_ROOT']."/cupid/db-base/connect-db.php";
+require $_SERVER['DOCUMENT_ROOT']."/cupid/db_base/connect-db.php";
 
 
 if($_SERVER["REQUEST_METHOD"]=="GET"){
@@ -19,6 +19,7 @@ if($_SERVER["REQUEST_METHOD"]=="GET"){
 		$retval = mysqli_query($conn, $query);
 		$data = mysqli_fetch_array($retval);
 		if(isset($data)){
+			echo "isset data";
 			$query = "UPDATE user_match SET matches='matched' WHERE user1='$matchid' AND user2 = '$userid'";
 			echo $matchid;
 			if($r = mysqli_query($conn, $query)){
@@ -28,13 +29,13 @@ if($_SERVER["REQUEST_METHOD"]=="GET"){
 			}
 		}
 		else{
-			$query = "SELECT * FROM user_match WHERE user1='$userid' AND user2 = '$matchid'";
-			$retvall = mysqli_query($conn, $query);
-			$data = mysqli_fetch_array($retvall);
-			if(!isset($data)){
-				$query = "INSERT INTO user_match(user1, user2) VALUES ('$userid', '$matchid')";
-				mysqli_query($conn, $query);
+			$query = "INSERT INTO user_match(user1, user2) VALUES ('$userid', '$matchid')";
+			if(mysqli_query($conn, $query)){
+				echo "data inserted";
+			} else {
+				echo "data not inserted";
 			}
+				
 		}
 	}
 }
