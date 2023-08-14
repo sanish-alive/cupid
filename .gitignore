@@ -6,3 +6,5 @@
 /images/*.png
 /images/*.gif
 /images/*.webp
+*.pyc
+/API/__pycache__
