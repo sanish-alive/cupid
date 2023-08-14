@@ -1,20 +1,5 @@
 <?php
-
-session_start();
-
-
-if(!isset($_SESSION['adminAuth']) && $_SESSION['admin']!="true" && !isset($_COOKIE['authAdmin']) && $_COOKIE['authAdmin']!="true"){
-	header("location: index.php");
-}
-
-
-require_once $_SERVER['DOCUMENT_ROOT']."/cupid/db_base/connect-db.php";
-
-
-$query = "SELECT * FROM user_tb";
-$retval = mysqli_query($conn, $query);
-$data = mysqli_num_rows($retval);
-
+require "adminPageController.php";
 ?>
 
 <!DOCTYPE html>
@@ -22,7 +7,7 @@ $data = mysqli_num_rows($retval);
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" type="text/css" href="adminstyle.css">
+	<link rel="stylesheet" type="text/css" href="styleadmin.css">
 	<title>Admin</title>
 </head>
 <body>
@@ -30,9 +15,15 @@ $data = mysqli_num_rows($retval);
 <div class="navbar">
 	<a id="navlogo" href="">Cupid</a>
 	<a href="adminlogout.php?logout='1'">Logout</a>
-	<a href="adminPage.php">Home</a>
+	<a href="Dashboard.php">Dashboard</a>
 </div>
 
+<div style="margin-top: 8em; margin-bottom: 0;" class="search-container">
+    <form action="adminPage.php" method="get">
+      <input type="text" value="<?php echo isset($search) ? $search : ''; ?> " placeholder="Search.." name="search">
+      <button type="submit">Submit</button>
+    </form>
+</div>
 
 <center>
 <div class="usertable">

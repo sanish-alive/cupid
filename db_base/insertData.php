@@ -76,12 +76,12 @@ class InsertData{
 
 	}
 
-	function insertAlreadyVisited($email, $updatevisited){
+	function insertAlreadyVisited($id, $updatevisited){
 		/* this function will update alreadyvisited data */
 
 		global $conn;
 
-		$query = "UPDATE user_tb SET alreadyvisited='$updatevisited' WHERE email='$email'";
+		$query = "UPDATE user_tb SET alreadyvisited='$updatevisited' WHERE userid='$id'";
 
 		$retval = mysqli_query($conn, $query);
 

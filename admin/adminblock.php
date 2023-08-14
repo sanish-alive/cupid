@@ -27,10 +27,7 @@ if($data['block']=="blocked"){
 	$query1 = "UPDATE user_tb SET block='blocked' WHERE userid='$userid'";
 }
 if(mysqli_query($conn, $query1)){
-	echo "<script>alert('user blocked')</script>";
-	header("location: adminPage.php");
+	header('Location: '.$_SERVER['HTTP_REFERER']);
+	exit();
 }
-
-
-
 ?>

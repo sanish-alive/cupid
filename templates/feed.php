@@ -6,6 +6,11 @@ if(!isset($_SESSION['loggedIn']) && $_SESSION['loggedIn']!="true" && !isset($_CO
     header("location: ../index.php");
 }
 
+require $_SERVER['DOCUMENT_ROOT']."/cupid/db_base/connect-db.php";
+require_once  $_SERVER['DOCUMENT_ROOT']."/cupid/db_base/extractData.php";
+require_once  $_SERVER['DOCUMENT_ROOT']."/cupid/db_base/insertData.php";
+
+
 $curl = curl_init();
 
 curl_setopt_array($curl, array(
@@ -17,7 +22,7 @@ curl_setopt_array($curl, array(
     CURLOPT_FOLLOWLOCATION => true,
     CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
     CURLOPT_CUSTOMREQUEST => 'POST',
-    CURLOPT_POSTFIELDS => 'lastname=shrestha&age=21&height=181&gender=Female&bio=i%20am%20a%20software%20engineer%20with%20a%20passion%20for%20coding',
+    CURLOPT_POSTFIELDS => 'userid='.$_SESSION['userid'].'&lastname='.$_SESSION['lastname'].'&age='.$_SESSION['age'].'&height='.$_SESSION['height'].'&gender='.$_SESSION['gender'].'&bio='.$_SESSION['bio'].'&alreadyVisited='.$_SESSION['alreadyvisited'],
     CURLOPT_HTTPHEADER => array(
     'Content-Type: application/x-www-form-urlencoded'
     ),
@@ -66,38 +71,43 @@ if ($data !== null) {
                     <p><b>Height: </b><?php echo $item['height']; ?></p>
                     <p><?php echo $item['bio']; ?></p></a>
 
-                    <center><button id='<?php echo $item['id']; ?>' onclick = "userliked('<?php echo $item['id']; ?>','<?php echo $item['id']; ?>')">	&#9829;</button><center>
+                    <center><button id='<?php echo $item['id']; ?>' onclick = "userliked('<?php echo $item['id']; ?>')">	&#9829;</button><center>
                 </div>
             </div>
         </div></a>
+
+
+        
 <?php
     }
-}
-?>
-        
-<center>
-<div style="margin-top: 20px; margin-bottom: 20px;">
+    echo "</div>";
+    echo "<center>";
+    echo '<div style="margin-top: 20px; margin-bottom: 20px;">';
+    $b = new InsertData();
 
-	<a style='text-decoration: none; color: white; background-color: rgb(255, 69, 132, 1); padding: 10px 40px; border-radius:5px' id='nextfeed' href='#'>Next</a>
+    
+    if(isset($item['id'])){
+        $b->insertAlreadyVisited($_SESSION['userid'], $item['id']);
+        $_SESSION['alreadyvisited'] = $item['id'];
+        echo "<a style='text-decoration: none; color: white; background-color: rgb(255, 69, 132, 1); padding: 10px 40px; border-radius:5px' id='nextfeed' href='".htmlspecialchars($_SERVER['PHP_SELF'])."'>Next</a>";
+    }else{
+        echo "<h1>Try Next Time</h1>";
+        $b->insertAlreadyVisited($_SESSION['email'], 0);#delete this
+        $_SESSION['alreadyvisited'] = 0;
+    }
+}
+
+?>
 </div>
 </center>
-
-
 <script>
-	function userliked(likedid, iduser){
+	function userliked(likedid){
 		document.getElementById(iduser).style.color = '#ff4584';
 		document.getElementById(iduser).style.backgroundColor = '#7762aa';
 		var xhttp = new XMLHttpRequest();
 		xhttp.open("GET", "feedmatcher.php?matchid="+likedid, true);
 		xhttp.send("matchid="+likedid);
-
-		
-
 	}
-
-
-	
 </script>
-
 </body>
 </html>

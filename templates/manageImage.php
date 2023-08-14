@@ -19,7 +19,7 @@ if($_SERVER['REQUEST_METHOD']=="POST"){
 		$imageno = $_POST['imageno'];
 		$imagename = $_POST['imagename'];
 		$query = "UPDATE user_img SET $imageno = '0' WHERE userid = '$user_id' ";
-		if(mysqli_query($conn, $query) && unlink($_SERVER['DOCUMENT_ROOT']."/login/images/".$imagename)){
+		if(mysqli_query($conn, $query) && unlink($_SERVER['DOCUMENT_ROOT']."/cupid/images/".$imagename)){
 			;
 			header("location: manageImage.php");
 		}

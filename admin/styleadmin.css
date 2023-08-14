@@ -59,3 +59,70 @@ td, th {
 tr:nth-child(even) {
   background-color: #dddddd;
 }
+
+.dashboard-main {
+	display: flex;
+	justify-content: center;
+	flex-wrap: wrap;
+	font-size: 40px;
+	text-align: center;
+	margin-top: 20px;
+	margin-left: 30px;
+	margin-right: 30px;
+	font-family: sans-serif;
+}
+
+.dashboard-main  > div {
+	background-color: #ff4584;
+	color: white;
+	width: 200px;
+	height: 150px;
+	margin: 40px;
+	border-radius: 20px;
+	transition: 0.3s;
+}
+
+.dashboard-main > div:hover{
+	background-color: #7951d8;
+	box-shadow: 10px 10px 10px lightblue;
+}
+
+.dashboard-main > div > p {
+	text-align: center;
+	vertical-align: middle;
+	line-height: 150px;
+}
+
+.search-container {
+	margin-top: 80px;
+	text-align: center;
+}
+
+.search-container input[type=text] {
+	width: 60%;
+	box-sizing: border-box;
+	border: 2px solid #ff4584;
+	border-radius: 4px;
+	font-size: 16px;
+	background-color: white;
+	background-image: url('https://www.w3schools.com/css/searchicon.png');
+	background-position: 10px 10px;
+	background-repeat: no-repeat;
+	padding: 12px 20px 12px 40px;
+}
+
+.search-container form button {
+	display:inline-block;
+	padding:10px 20px;
+	background-color: #ff4584;
+	font-size:17px;
+	border:none;
+	border-radius:5px;
+	color:white;
+	cursor:pointer;
+}
+
+.search-container form button:hover {
+   background-color: #7762aa;
+   color:white;
+ }
