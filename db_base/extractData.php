@@ -97,13 +97,13 @@ class ExtractData{
 		/* this function will extract images */
 		global $conn;
 
-		$query = "SELECT userid, image1, image2, image3, image4, image5 FROM user_img WHERE userid = '$user_id'";
+		$query = "SELECT * FROM user_img WHERE userid = '$user_id'";
 
 		$retval = mysqli_query($conn, $query);
 
-		$data = mysqli_fetch_array($retval);
+		// $data = mysqli_fetch_array($retval);
 
-		return $data;
+		return $retval;
 	}
 
 

@@ -65,7 +65,7 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
 
 
 		if(in_array($fileType, $allowTypes)){
-			if(!move_uploaded_file($_FILES["file"]["tmp_name"], $_SERVER['DOCUMENT_ROOT']."/login/uploads/" . $newfilename)){
+			if(!move_uploaded_file($_FILES["file"]["tmp_name"], $_SERVER['DOCUMENT_ROOT']."/cupid/uploads/" . $newfilename)){
 				$error = 1;
 			}
 		}else{
@@ -92,8 +92,6 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
 			if($b->insertRegisration($firstname, $lastname, $email, $pwd, $gender, $age, $height, $bio, $newfilename)){
 				$c = new ExtractData();
 				$userid = $c->extUserId($email);
-				$insert_img_query = "INSERT INTO user_img(userid, image1, image2, image3, image4, image5) VALUES ('$userid', '0', '0','0', '0', '0')";
-				mysqli_query($conn, $insert_img_query);
 				header("location: ../index.php");
 			}
 			else{

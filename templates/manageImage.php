@@ -18,7 +18,7 @@ if($_SERVER['REQUEST_METHOD']=="POST"){
 
 		$imageno = $_POST['imageno'];
 		$imagename = $_POST['imagename'];
-		$query = "UPDATE user_img SET $imageno = '0' WHERE userid = '$user_id' ";
+		$query = "DELETE FROM user_img WHERE imageid = '$imageno' ";
 		if(mysqli_query($conn, $query) && unlink($_SERVER['DOCUMENT_ROOT']."/cupid/images/".$imagename)){
 			;
 			header("location: manageImage.php");
@@ -37,24 +37,11 @@ if($_SERVER['REQUEST_METHOD']=="POST"){
 
 			if(in_array($fileType, $allowTypes)){
 				if(move_uploaded_file($_FILES['file']['tmp_name'], "../images/".$newFileName)){
-
-
-					for($i=1;$i<6;$i++){
-						$dbimagename = "image".$i;
-						$dbimagename = strval($dbimagename);
-
-						$data = $a->extImages($user_id); 
-
-						if($data[$dbimagename]=='0'){
-							$query = "UPDATE user_img SET $dbimagename='$newFileName' WHERE userid = '$user_id'";
-							if(mysqli_query($conn, $query)){
-								header("location: manageImage.php");
-								break;
-							}
-						}
-
-
+					$query = "INSERT INTO user_img(userid, image) VALUES('$user_id', '$newFileName')";
+					if(mysqli_query($conn, $query)){
+						header("location: manageImage.php");
 					}
+						
 				}else{
 					$imginvalid = "error on uploading";
 				}
@@ -87,23 +74,18 @@ if($_SERVER['REQUEST_METHOD']=="POST"){
 		</form>
 
 		<?php
-		
-		for($i=1;$i<6;$i++){
-			$dbimagename = "image".$i;
-			$dbimagename = strval($dbimagename);
-
-			$data = $a->extImages($user_id);
-
-			if($data[$dbimagename]!='0'){
+		$retval = $a->extImages($user_id);
+		if(mysqli_num_rows($retval)>0){
+		while($row=mysqli_fetch_array($retval)){
 
 		?>
 		
 				<div class="img_container">
-					<img src='<?php echo "../images/".$data[$dbimagename] ?>'>
+					<img src='<?php echo "../images/".$row['image'] ?>'>
 					<div style="width: 100%" class="imgaction">
 						<form style="width: 100%" action="<?php htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
-							<input type="hidden" name="imagename" value="<?php echo $data[$dbimagename]; ?>">
-							<input type="hidden" name="imageno" value="<?php echo $dbimagename; ?>">
+							<input type="hidden" name="imagename" value="<?php echo $row['image']; ?>">
+							<input type="hidden" name="imageno" value="<?php echo $row['imageid'] ?>">
 							<input id="manageDelImg" type="submit" name="delete" value="Delete">
 						</form>
 					</div>

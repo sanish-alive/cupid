@@ -1,4 +1,5 @@
 /uploads/*.jpg
+/uploads/*.jpeg
 /uploads/*.png
 /uploads/*.gif
 /uploads/*.webp

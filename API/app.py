@@ -22,7 +22,7 @@ def getData():
 		already_visited_partner = int(request.form['alreadyVisited'])
 		print(already_visited_partner)
 		my_cursor = mydb.cursor(dictionary=True)
-		query = "SELECT * FROM user_tb WHERE gender = %s AND userid > %s LIMIT 2"
+		query = "SELECT * FROM user_tb WHERE gender = %s AND userid > %s LIMIT 5"
 		params = ('Male' if user_gender == 'Female' else 'Female', already_visited_partner)
 		my_cursor.execute(query, params)
 		my_partner = my_cursor.fetchall()

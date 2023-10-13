@@ -58,8 +58,10 @@ $data = json_decode($response, true);
 
 <?php
 if ($data !== null) {
+    print_r($data);
     foreach ($data as $item) {
-        if(!isset($item['age'])) continue;
+        if(!isset($item['cosine'])) continue;
+        if($item['cosine']>0.1){
 ?>
         <a href="userinfo.php?matchid=<?php echo $item['id']; ?>"><div class = "userprofile">
 	
@@ -70,8 +72,10 @@ if ($data !== null) {
                     <p><b>Age: </b><?php echo $item['age']; ?></p>
                     <p><b>Height: </b><?php echo $item['height']; ?></p>
                     <p><?php echo $item['bio']; ?></p></a>
-
-                    <center><button id='<?php echo $item['id']; ?>' onclick = "userliked('<?php echo $item['id']; ?>')">	&#9829;</button><center>
+                    <?php 
+                    $likeuser=$item['id']; 
+                    ?>
+                    <center><button id='<?php echo $item['id']; ?>' onclick = "userliked('<?php echo $likeuser; ?>')">	&#9829;</button><center>
                 </div>
             </div>
         </div></a>
@@ -79,6 +83,7 @@ if ($data !== null) {
 
         
 <?php
+        } 
     }
     echo "</div>";
     echo "<center>";
@@ -102,8 +107,8 @@ if ($data !== null) {
 </center>
 <script>
 	function userliked(likedid){
-		document.getElementById(iduser).style.color = '#ff4584';
-		document.getElementById(iduser).style.backgroundColor = '#7762aa';
+		document.getElementById(likedid).style.color = '#ff4584';
+		document.getElementById(likedid).style.backgroundColor = '#7762aa';
 		var xhttp = new XMLHttpRequest();
 		xhttp.open("GET", "feedmatcher.php?matchid="+likedid, true);
 		xhttp.send("matchid="+likedid);

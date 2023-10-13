@@ -113,21 +113,15 @@ if(isset($_GET['userid'])){
 	    	<h1>User Image</h1>
 
 	    	<?php
+				$retval = $a->extImages($matchid);
 
-
-
-			for($i=1;$i<6;$i++){
-				$dbimagename = "image".$i;
-				$dbimagename = strval($dbimagename);
-
-				$data = $a->extImages($matchid);
-
-				if($data[$dbimagename]!='0'){
+				if(mysqli_num_rows($retval)>0){
+					while($row=mysqli_fetch_array($retval)){
 
 		?>
 		
 				<div class="img_container">
-					<img src='<?php echo "../images/".$data[$dbimagename] ?>'>
+					<img src='<?php echo "../images/".$row['image'] ?>'>
 				</div>
 
 		<?php
