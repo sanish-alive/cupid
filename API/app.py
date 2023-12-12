@@ -44,18 +44,19 @@ def getData():
 					'bio': row['bio']
 				}
 				cosine_result = cosine_similarity.calculateCosineSimilarity(person1, person2)
-				results.append(
-					{
-						'id': row['userid'],
-						'firstname': row['firstname'],
-						'lastname': row['lastname'],
-						'email': row['email'],
-						'gender': row['gender'],
-						'height': row['height'],
-						'age': row['age'],
-						'bio': row['bio'],
-						'profileImg': row['profileImg'],
-						'cosine': cosine_result})
+				if(cosine_result > 0.3):
+					results.append(
+						{
+							'id': row['userid'],
+							'firstname': row['firstname'],
+							'lastname': row['lastname'],
+							'email': row['email'],
+							'gender': row['gender'],
+							'height': row['height'],
+							'age': row['age'],
+							'bio': row['bio'],
+							'profileImg': row['profileImg'],
+							'cosine': cosine_result})
 				
 			response = make_response(
 				jsonify(results),

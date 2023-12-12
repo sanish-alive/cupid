@@ -61,7 +61,7 @@ if ($data !== null) {
     print_r($data);
     foreach ($data as $item) {
         if(!isset($item['cosine'])) continue;
-        if($item['cosine']>0.1){
+        //if($item['cosine']>0.1){
 ?>
         <a href="userinfo.php?matchid=<?php echo $item['id']; ?>"><div class = "userprofile">
 	
@@ -83,7 +83,7 @@ if ($data !== null) {
 
         
 <?php
-        } 
+        //} 
     }
     echo "</div>";
     echo "<center>";
