@@ -58,7 +58,7 @@ $data = json_decode($response, true);
 
 <?php
 if ($data !== null) {
-    print_r($data);
+    // print_r($data);
     foreach ($data as $item) {
         if(!isset($item['cosine'])) continue;
         //if($item['cosine']>0.1){
